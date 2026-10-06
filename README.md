@@ -1,10 +1,6 @@
 # Impacto de la Inteligencia Artificial y las Redes Sociales en la Salud y el Rendimiento Academico
 
-**Universidad de Colima**  
-**Facultad de Telematica** | Ingenieria de Software  
-**Optativa:** Big Data y Data Mining  
-**Alumno:** Manuel Alcaraz Baltazar (7H)  
-**Docente:** Dr. Juan Antonio Guerrero Ibañez  
+Manuel Alcaraz Baltazar (7H)  
 **Fecha:** Octubre 2026  
 
 ---
