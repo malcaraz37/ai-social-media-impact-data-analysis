@@ -1,324 +1,183 @@
-# 📊 Impacto de la Inteligencia Artificial y las Redes Sociales en la Salud y el Rendimiento Académico de Estudiantes
+# Impacto de la Inteligencia Artificial y las Redes Sociales en la Salud y el Rendimiento Academico
 
-> **Facultad de Telemática — Universidad de Colima**  
-> **Carrera:** Ingeniería de Software  
-> **Materia:** Optativa — Big Data y Data Mining  
-> **Alumno:** Manuel Alcaraz Baltazar (7H)  
-> **Docente:** Dr. Juan Antonio Guerrero Ibañez  
-> **Fecha:** Octubre 2026  
-
----
-
-## 📑 Tabla de Contenidos
-1. [Resumen Ejecutivo y Justificación](#1-resumen-ejecutivo-y-justificación)
-2. [Descripción del Conjunto de Datos](#2-descripción-del-conjunto-de-datos)
-3. [Traducción y Mapeo de Variables al Español](#3-traducción-y-mapeo-de-variables-al-español)
-4. [Metodología de Análisis Exploratorio (EDA)](#4-metodología-de-análisis-exploratorio-eda)
-5. [Visualizaciones Clave del Proyecto](#5-visualizaciones-clave-del-proyecto)
-6. [Tablas Estadísticas Oficiales y Análisis de Outliers (IQR)](#6-tablas-estadísticas-oficiales-y-análisis-de-outliers-iqr)
-7. [Hallazgos Clave y Alertas Metodológicas](#7-hallazgos-clave-y-alertas-metodológicas)
-8. [Plan de Mejora y Recomendaciones](#8-plan-de-mejora-y-recomendaciones)
-   - [Para el Alumnado](#a-recomendaciones-prácticas-para-el-alumnado)
-   - [Para la Institución Educativa](#b-recomendaciones-para-la-institución-educativa)
-9. [Valor Técnico y Competencias Adquiridas](#9-valor-técnico-y-competencias-adquiridas)
-10. [Instrucciones de Instalación y Ejecución](#10-instrucciones-de-instalación-y-ejecución)
+**Universidad de Colima**  
+**Facultad de Telematica** | Ingenieria de Software  
+**Optativa:** Big Data y Data Mining  
+**Alumno:** Manuel Alcaraz Baltazar (7H)  
+**Docente:** Dr. Juan Antonio Guerrero Ibañez  
+**Fecha:** Octubre 2026  
 
 ---
 
-## 1. Resumen Ejecutivo y Justificación
+## 1. Descripcion del Proyecto
 
-En los últimos años, la adopción masiva de herramientas de **Inteligencia Artificial Generativa** y el consumo intensivo de **redes sociales** han transformado radicalmente la rutina de los estudiantes. Si bien estas tecnologías ofrecen facilidades para la investigación y la comunicación, el uso desmedido suele desplazar hábitos fundamentales para el bienestar, tales como el sueño reparador, la actividad física y la convivencia presencial.
+Este proyecto analiza el impacto del uso de redes sociales y herramientas de inteligencia artificial en los habitos de salud (sueno, actividad fisica, salud mental) y en el rendimiento escolar de los estudiantes, con el objetivo de identificar de forma temprana a quienes tienen riesgo de reprobacion academica (`Academic_Failure_Risk`).
 
-### 🎯 Objetivo General
-Desarrollar un análisis analítico y exploratorio riguroso sobre los hábitos digitales y de salud de los estudiantes para identificar patrones asociados al **riesgo de reprobación académica** (`Academic_Failure_Risk`), permitiendo la construcción de futuros modelos predictivos y el diseño de estrategias preventivas oportunas.
-
-### ❓ Preguntas de Investigación
-1. ¿Qué hábitos digitales y de bienestar correlacionan con mayor fuerza con el riesgo de reprobar?
-2. ¿Qué diferencias cuantitativas existen entre los estudiantes en riesgo y aquellos sin riesgo?
-3. ¿El nivel de agotamiento (*Burnout*) es un predictor temprano o representa una señal de colapso inminente (*Data Leakage*)?
-4. ¿Existen diferencias significativas de riesgo entre géneros o niveles educativos?
+El analisis se desarrollo mediante un Analisis Exploratorio de Datos (EDA) estructurado en Python, utilizando las librerias **Pandas**, **NumPy**, **Matplotlib** y **Seaborn**.
 
 ---
 
-## 2. Descripción del Conjunto de Datos
+## 2. Conjunto de Datos
 
-El conjunto de datos utilizado proviene del repositorio público de Kaggle: [AI and Social Media Impact: Student Health and Grades](https://www.kaggle.com/datasets/debayank2024/ai-and-social-media-impact-student-health-and-grades), publicado por Debayan Bandyopadhyay.
+Los datos provienen del repositorio publico de Kaggle: *AI and Social Media Impact: Student Health and Grades* (por Debayan Bandyopadhyay).
 
-* **Registros:** 15,000 estudiantes únicos.
-* **Variables:** 14 columnas (1 identificador, 9 numéricas y 4 categóricas).
-* **Calidad:** 100% libre de valores nulos (`0 nulls`) y sin registros duplicados.
+* **Total de registros:** 15,000 estudiantes.
+* **Total de variables:** 14 (1 identificador, 9 cuantitativas y 4 categoricas).
+* **Calidad de datos:** 0 valores nulos y 0 registros duplicados.
 
-### 📋 Diccionario de Variables (Tabla 1)
+### Diccionario de Variables
 
-| Variable Original | Tipo de Dato | Variable en Español | Qué Representa |
+| Variable Original | Tipo | Variable en Espanol | Descripcion |
 | :--- | :---: | :--- | :--- |
-| `Student_ID` | Texto / ID | Identificador del estudiante | Código alfanumérico único por alumno (`STU_00001` a `STU_15000`). |
-| `Age` | Entero | Edad | Edad en años cumplidos (rango de 13 a 25 años). |
-| `Gender` | Categórica | Género | Identidad registrada: *Male* (Masculino), *Female* (Femenino), *Non-binary* (No binario). |
-| `Education_Level` | Categórica | Nivel Escolar | Nivel académico: *High School* (Bachillerato), *College* (Nivel Intermedio), *University* (Universidad). |
-| `Daily_Social_Media_Hours` | Decimal | Horas en redes sociales | Promedio de horas diarias dedicadas a redes sociales (0 a 14 hrs). |
-| `Daily_AI_Tool_Usage_Hours` | Decimal | Horas con herramientas de IA | Promedio de horas diarias con herramientas de IA (0 a 9.5 hrs). |
-| `Sleep_Hours` | Decimal | Horas de sueño | Horas promedio de sueño por noche (2.0 a 11.15 hrs). |
-| `Physical_Activity_Hours` | Decimal | Horas de actividad física | Horas promedio diarias dedicadas a ejercicio/deporte (0 a 5.0 hrs). |
-| `Mental_Health_Score` | Decimal | Puntaje de salud mental | Escala de bienestar psicológico de 0 a 100 (mayor puntaje = mejor salud). |
-| `Physical_Health_Score` | Decimal | Puntaje de salud física | Escala de bienestar físico de 0 a 100 (mayor puntaje = mejor salud). |
-| `Social_Isolation_Score` | Decimal | Aislamiento social | Nivel percibido de aislamiento de 1 a 10 (mayor puntaje = mayor aislamiento). |
-| `Burnout_Level` | Categórica | Nivel de agotamiento | Nivel de fatiga académica: *Low* (Bajo), *Moderate* (Moderado), *High* (Alto), *Severe* (Severo). |
-| `Academic_Performance_Score` | Decimal | Rendimiento académico | Calificación promedio del estudiante en escala de 0 a 100. |
-| `Academic_Failure_Risk` | Binaria (0/1) | **Riesgo de reprobación (Target)** | Variable objetivo: **0 = Sin riesgo**, **1 = En riesgo de reprobar**. |
+| `Student_ID` | Texto | Identificador | Codigo unico del estudiante. |
+| `Age` | Entero | Edad | Edad en anos (13 a 25 anos). |
+| `Gender` | Categorica | Genero | Masculino, Femenino o No binario. |
+| `Education_Level` | Categorica | Nivel Escolar | Bachillerato (High School), Intermedio (College) o Universidad (University). |
+| `Daily_Social_Media_Hours` | Decimal | Horas en redes sociales | Horas diarias dedicadas a redes sociales (0 a 14 hrs). |
+| `Daily_AI_Tool_Usage_Hours` | Decimal | Horas con herramientas de IA | Horas diarias de uso de IA generativa (0 a 9.5 hrs). |
+| `Sleep_Hours` | Decimal | Horas de sueno | Promedio de sueno diario por noche (2.0 a 11.15 hrs). |
+| `Physical_Activity_Hours` | Decimal | Horas de actividad fisica | Horas diarias de deporte o ejercicio (0 a 5.0 hrs). |
+| `Mental_Health_Score` | Decimal | Salud mental | Puntaje de bienestar psicologico de 0 a 100. |
+| `Physical_Health_Score` | Decimal | Salud fisica | Puntaje de bienestar fisico de 0 a 100. |
+| `Social_Isolation_Score` | Decimal | Aislamiento social | Escala de aislamiento percibido (1 a 10). |
+| `Burnout_Level` | Categorica | Nivel de agotamiento | Nivel de fatiga: Bajo, Moderado, Alto o Severo. |
+| `Academic_Performance_Score` | Decimal | Rendimiento academico | Calificacion promedio escolar (0 a 100). |
+| `Academic_Failure_Risk` | Binaria | Riesgo de reprobacion | Variable objetivo: **0 = Sin riesgo**, **1 = En riesgo de reprobar**. |
 
 ---
 
-## 3. Traducción y Mapeo de Variables al Español
+## 3. Mapeo y Traduccion de Variables al Espanol
 
-### 💡 Justificación Técnica y Pedagógica
-Aunque los conjuntos de datos profesionales suelen estructurarse con nombres de columnas en inglés por convención de bases de datos, **la presentación de resultados analíticos a tomadores de decisiones, directivos escolares y docentes requiere que las visualizaciones y reportes sean inmediatamente legibles en español**, sin ambigüedades técnicas.
+### Justificacion
+Para garantizar que las graficas, tablas y reportes analiticos sean faciles de interpretar por docentes y directivos sin barreras de idioma, se implemento un mapeo ordenado de las columnas y niveles categoricos al espanol.
 
-### 🛠️ Implementación en Código
-Para mantener la integridad del DataFrame original y al mismo tiempo generar figuras y tablas comprensibles, se aplicó un mapeo mediante diccionarios y transformaciones ordenadas en **Pandas**:
+### Implementacion Tecnica
+Se utilizaron diccionarios de mapeo aplicados directamente a las transformaciones y etiquetas de visualizacion:
 
 ```python
-# 1. Diccionario de mapeo de nombres de variables al español
+# Mapeo de nombres para visualizacion y tablas
 var_names_es = {
-    'Age': 'Edad (años)',
+    'Age': 'Edad (anos)',
     'Daily_Social_Media_Hours': 'Horas en redes sociales',
     'Daily_AI_Tool_Usage_Hours': 'Horas con herramientas de IA',
-    'Sleep_Hours': 'Horas de sueño',
-    'Physical_Activity_Hours': 'Horas de actividad física',
+    'Sleep_Hours': 'Horas de sueno',
+    'Physical_Activity_Hours': 'Horas de actividad fisica',
     'Mental_Health_Score': 'Salud mental',
-    'Physical_Health_Score': 'Salud física',
+    'Physical_Health_Score': 'Salud fisica',
     'Social_Isolation_Score': 'Aislamiento social',
-    'Academic_Performance_Score': 'Rendimiento académico',
-    'Academic_Failure_Risk': 'Riesgo de reprobación'
+    'Academic_Performance_Score': 'Rendimiento academico',
+    'Academic_Failure_Risk': 'Riesgo de reprobacion'
 }
 
-# 2. Mapeo ordinal para el nivel de agotamiento
-burnout_map = {
-    'Low': 'Bajo',
-    'Moderate': 'Moderado',
-    'High': 'Alto',
-    'Severe': 'Severo'
-}
-```
-
-Este enfoque garantizó que los gráficos generados con `matplotlib.pyplot` y `seaborn` mostraran títulos, ejes y etiquetas de categorías en español con precisión y orden lógico.
-
----
-
-## 4. Metodología de Análisis Exploratorio (EDA)
-
-Siguiendo las mejores prácticas vistas en la práctica de clase (*Tipos de Clima*):
-1. **Inspección estructural:** Verificación de tipos con `df.info()`, dimensiones con `df.shape` y primeros/últimos registros con `head()` y `tail()`.
-2. **Evaluación de calidad e integridad:** Comprobación de nulos con `df.isnull().sum()` y validación visual mediante `sns.heatmap(df.isnull(), cmap='Reds')`.
-3. **Análisis univariado:** Conteo y proporciones de frecuencias con `value_counts()` y `countplot()`.
-4. **Análisis de dispersión y distribución:** Histogramas de variables cuantitativas con cálculo dinámico de medias ($\mu$) y desviaciones estándar ($\sigma$).
-5. **Análisis bivariado y multivariado:** Matriz de correlación de Pearson y diagramas de caja (*Boxplots*) condicionados por la variable objetivo.
-6. **Detección no paramétrica de valores atípicos:** Aplicación de la regla del Rango Intercuartílico ($IQR$).
-
----
-
-## 5. Visualizaciones Clave del Proyecto
-
-El cuaderno incluye el código ejecutable para generar las 5 figuras centrales del reporte de avance:
-
-### 🔹 Figura 1. Distribución del riesgo de reprobación y del nivel de agotamiento
-* **Objetivo:** Visualizar el desbalance de clases y la distribución de la fatiga estudiantil.
-* **Técnica:** `sns.countplot` en subplots de 1 fila × 2 columnas.
-* **Hallazgo:** Muestra el marcado desbalance donde el **94.0% (14,100)** de los alumnos no está en riesgo y solo el **6.0% (900)** sí lo está. El agotamiento disminuye progresivamente: Bajo (60.0%), Moderado (28.0%), Alto (9.0%) y Severo (3.0%).
-
-```python
-fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-sns.countplot(x='Academic_Failure_Risk', data=student_df, ax=axes[0], color='gray', edgecolor='black')
-sns.countplot(x='Burnout_Level', data=student_df, order=['Low', 'Moderate', 'High', 'Severe'], ax=axes[1], color='silver', edgecolor='black')
+# Ordenamiento logico de niveles de agotamiento
+burnout_order = ['Low', 'Moderate', 'High', 'Severe']
+burnout_labels = ['Bajo', 'Moderado', 'Alto', 'Severo']
 ```
 
 ---
 
-### 🔹 Figura 2. Distribución de variables numéricas seleccionadas (Histogramas)
-* **Objetivo:** Analizar la forma, simetría y dispersión de las 6 variables cuantitativas centrales.
-* **Técnica:** Cuadrícula de $2 \times 3$ con `ax.hist(bins=30)` calculando media y desviación estándar en el título de cada gráfico.
-* **Hallazgo:** Todas las variables siguen distribuciones acampanadas y continuas dentro de rangos biológica y académicamente consistentes.
+## 4. Visualizaciones Clave del Proyecto
 
-```python
-fig, axes = plt.subplots(2, 3, figsize=(14, 8))
-for ax, (col, nombre) in zip(axes.flatten(), variables_hist):
-    media, desv = student_df[col].mean(), student_df[col].std()
-    ax.hist(student_df[col], bins=30, color='gray', edgecolor='black', alpha=0.7)
-    ax.set_title(f"{nombre}\nMedia: {media:.2f} | Desv. Est.: {desv:.2f}")
-```
+El codigo genera las 5 figuras analiticas descritas a continuacion:
 
----
+1. **Figura 1. Distribucion del riesgo y agotamiento:**
+   * Utiliza `sns.countplot` para mostrar que solo el **6.0% (900 estudiantes)** esta en riesgo de reprobacion frente al **94.0% (14,100)** sin riesgo.
+   * Muestra la distribucion decreciente del agotamiento: Bajo (60.0%), Moderado (28.0%), Alto (9.0%) y Severo (3.0%).
 
-### 🔹 Figura 3. Matriz de correlaciones entre variables numéricas
-* **Objetivo:** Identificar el grado de asociación lineal entre las 10 características numéricas.
-* **Técnica:** `student_df.corr(numeric_only=True, method='pearson')` visualizado con `sns.heatmap(annot=True, fmt='.2f', cmap='Greys')`.
-* **Hallazgo:** El riesgo de reprobación se asocia negativamente con la **salud mental ($-0.36$)**, el **rendimiento previo ($-0.30$)** y el **sueño ($-0.24$)**; y positivamente con las **redes sociales ($+0.33$)** y el **aislamiento ($+0.23$)**. La edad no tiene impacto ($+0.01$).
+2. **Figura 2. Distribucion de variables cuantitativas:**
+   * Cuadricula $2 \times 3$ de histogramas con `ax.hist(bins=30)`.
+   * Incluye el calculo automatico de la media ($\mu$) y desviacion estandar ($\sigma$) en el encabezado de cada grafico.
 
----
+3. **Figura 3. Matriz de correlaciones de Pearson:**
+   * Calcula `df.corr(numeric_only=True)` y la visualiza con `sns.heatmap(annot=True)`.
+   * Identifica que la salud mental ($-0.36$), el rendimiento previo ($-0.30$) y el sueno ($-0.24$) reducen el riesgo; mientras que las redes sociales ($+0.33$) y el aislamiento ($+0.23$) lo incrementan.
 
-### 🔹 Figura 4. Comparación de variables clave entre estudiantes sin riesgo y en riesgo (Boxplots)
-* **Objetivo:** Comparar la mediana, dispersión intercuartílica y valores atípicos de los grupos $0$ y $1$.
-* **Técnica:** 4 diagramas de caja con `sns.boxplot(x='Academic_Failure_Risk', y=col, data=student_df)`.
-* **Hallazgo:** Los estudiantes en riesgo presentan medianas visiblemente desplazadas: duermen menos de 5.5 horas, superan las 7.5 horas de redes sociales y sufren una fuerte caída en salud mental y rendimiento.
+4. **Figura 4. Comparacion entre grupos sin riesgo y en riesgo:**
+   * Diagramas de caja (`sns.boxplot`) para las 4 variables clave.
+   * Evidencia que los estudiantes en riesgo duermen sustancialmente menos y pasan casi el doble de tiempo en redes sociales.
+
+5. **Figura 5. Proporcion de estudiantes en riesgo segun nivel de agotamiento:**
+   * Grafico de barras apiladas al 100% con `pd.crosstab(..., normalize='index') * 100` y `.plot(kind='bar', stacked=True)`.
+   * Demuestra que en agotamiento *Severo* el 100% reprueba y en *Alto* el 33.3%, mientras que en *Bajo* y *Moderado* el riesgo es 0%.
 
 ---
 
-### 🔹 Figura 5. Proporción de estudiantes en riesgo según su nivel de agotamiento (Barras Apiladas)
-* **Objetivo:** Cuantificar la tasa de reprobación en cada estadio de agotamiento.
-* **Técnica:** `pd.crosstab(..., normalize='index') * 100` y graficado mediante `.plot(kind='bar', stacked=True)`.
-* **Hallazgo:**
-  * **Agotamiento Bajo:** 100% Sin riesgo, 0% En riesgo.
-  * **Agotamiento Moderado:** 100% Sin riesgo, 0% En riesgo.
-  * **Agotamiento Alto:** 66.7% Sin riesgo, **33.3% En riesgo**.
-  * **Agotamiento Severo:** 0% Sin riesgo, **100.0% En riesgo**.
+## 5. Tablas Estadisticas y Deteccion de Outliers (IQR)
+
+### Comparacion de Promedios (Tabla 3)
+
+| Variable | Sin riesgo (14,100) | En riesgo (900) | Impacto Observado |
+| :--- | :---: | :---: | :--- |
+| **Horas en redes sociales** | 4.34 hrs | **7.67 hrs** | Aumento de $+76.7\%$ en pantalla |
+| **Horas con IA** | 2.53 hrs | **3.51 hrs** | Mayor uso reactivo ($+38.7\%$) |
+| **Horas de sueno** | 6.62 hrs | **5.35 hrs** | Deficit de sueno de $-1.27$ hrs |
+| **Actividad fisica** | 1.28 hrs | **0.68 hrs** | Reduccion del $-46.9\%$ |
+| **Salud mental** | 73.34 pts | **59.49 pts** | Caida de $-13.85$ puntos |
+| **Rendimiento academico** | 79.18 pts | **64.79 pts** | Caida de $-14.39$ puntos |
+
+### Deteccion de Outliers mediante Rango Intercuartilico ($IQR$)
+Se calculo $IQR = Q_3 - Q_1$ determinando los limites $[Q_1 - 1.5 \cdot IQR, Q_3 + 1.5 \cdot IQR]$:
+* **Salud mental:** 175 casos atipicos.
+* **Horas de sueno:** 96 casos atipicos.
+* **Salud fisica:** 59 casos atipicos.
+* **Rendimiento academico:** 56 casos atipicos.
+* **Horas con IA:** 54 casos atipicos.
+* **Actividad fisica:** 51 casos atipicos.
+* **Horas en redes sociales:** 45 casos atipicos.
+* **Aislamiento social:** 33 casos atipicos.
+
+*Decision tecnica:* Los valores atipicos representan menos del $1.2\%$ de los registros y corresponden a casos extremos reales (ej. dormir solo 2 horas), por lo que se conservan en su totalidad.
 
 ---
 
-## 6. Tablas Estadísticas Oficiales y Análisis de Outliers (IQR)
+## 6. Hallazgos Principales y Alertas Metodologicas
 
-### 📊 Tabla 2. Estadísticas descriptivas de las variables numéricas
-
-| Variable | Media ($\mu$) | Desv. Estándar ($\sigma$) | Mínimo | Mediana | Máximo |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Edad (años)** | 19.04 | 3.77 | 13.00 | 19.00 | 25.00 |
-| **Horas en redes sociales** | 4.54 | 2.40 | 0.00 | 4.50 | 14.00 |
-| **Horas con IA** | 2.58 | 1.68 | 0.00 | 2.51 | 9.50 |
-| **Horas de sueño** | 6.54 | 1.27 | 2.00 | 6.55 | 11.15 |
-| **Horas de actividad física** | 1.25 | 1.04 | 0.00 | 1.13 | 5.00 |
-| **Salud mental** | 72.51 | 9.25 | 32.56 | 73.76 | 91.76 |
-| **Salud física** | 88.02 | 9.68 | 48.03 | 89.47 | 99.98 |
-| **Aislamiento social** | 4.31 | 1.16 | 0.97 | 4.28 | 8.41 |
-| **Rendimiento académico** | 78.31 | 11.54 | 23.99 | 78.59 | 99.98 |
-
----
-
-### 📊 Tabla 3. Promedios según el riesgo de reprobación
-
-| Variable | Sin riesgo ($N=14,100$) | En riesgo ($N=900$) | Diferencia Absoluta |
-| :--- | :---: | :---: | :---: |
-| **Horas en redes sociales** | 4.34 hrs | **7.67 hrs** | $+3.33$ hrs ($+76.7\%$) |
-| **Horas con IA** | 2.53 hrs | **3.51 hrs** | $+0.98$ hrs ($+38.7\%$) |
-| **Horas de sueño** | 6.62 hrs | **5.35 hrs** | $-1.27$ hrs (Déficit) |
-| **Horas de actividad física** | 1.28 hrs | **0.68 hrs** | $-0.60$ hrs ($-46.9\%$) |
-| **Salud mental** | 73.34 pts | **59.49 pts** | $-13.85$ puntos |
-| **Salud física** | 88.46 pts | **81.05 pts** | $-7.41$ puntos |
-| **Aislamiento social** | 4.24 pts | **5.37 pts** | $+1.13$ puntos |
-| **Rendimiento académico** | 79.18 pts | **64.79 pts** | $-14.39$ puntos |
-
----
-
-### 📐 Detección de Valores Atípicos con el Rango Intercuartílico ($IQR$)
-Se calculó el rango intercuartílico $IQR = Q_3 - Q_1$ identificando las observaciones fuera del intervalo $[Q_1 - 1.5 \cdot IQR, Q_3 + 1.5 \cdot IQR]$:
-
-```python
-for c in num.columns.drop('Academic_Failure_Risk'):
-    q1, q3 = num[c].quantile([0.25, 0.75])
-    iqr = q3 - q1
-    n = ((num[c] < q1 - 1.5 * iqr) | (num[c] > q3 + 1.5 * iqr)).sum()
-    print(f'{c}: {n} valores atípicos')
-```
-
-* **Salud mental:** 175 casos atípicos.
-* **Horas de sueño:** 96 casos atípicos.
-* **Salud física:** 59 casos atípicos.
-* **Rendimiento académico:** 56 casos atípicos.
-* **Horas con IA:** 54 casos atípicos.
-* **Actividad física:** 51 casos atípicos.
-* **Horas en redes sociales:** 45 casos atípicos.
-* **Aislamiento social:** 33 casos atípicos.
-* **Edad:** 0 casos atípicos.
-
-> **Decisión Técnica:** Los valores atípicos representan apenas entre el $0.2\%$ y el $1.1\%$ del total de datos y corresponden a situaciones humanas extremas pero plausibles (como dormir 2 horas o pasar 14 horas en pantalla). Por ende, **se conservan íntegramente** para no distorsionar el entrenamiento de modelos basados en árboles.
-
----
-
-## 7. Hallazgos Clave y Alertas Metodológicas
-
-1. **Desbalance de Clases Severo (94% / 6%):**  
-   Un clasificador ingenuo que prediga siempre "Sin riesgo" alcanzaría un $94.0\%$ de precisión (*Accuracy*) pero sería completamente inútil. En la etapa de modelado será indispensable optimizar métricas como **Recall (Sensibilidad)**, **F1-Score**, **Precisión Balanceada** y **PR-AUC**.
-2. **Alerta de Fuga de Información (*Data Leakage* con Burnout):**  
-   El nivel de agotamiento predice de forma cuasi-perfecta el riesgo ($100\%$ en severo y $0\%$ en bajo/moderado). Un modelo que incluya `Burnout_Level` parecerá perfecto pero no funcionará como un verdadero detector temprano, sino como una alarma tardía. Se deben entrenar variantes de modelos con y sin esta variable.
+1. **Desbalance Severo de Clases:**  
+   Al haber solo un 6% de casos positivos, no se debe evaluar el modelado con *Accuracy* (precision simple), sino priorizar metricas como **Recall (Sensibilidad)**, **F1-Score** y **PR-AUC**.
+2. **Riesgo de Fuga de Informacion (*Data Leakage*):**  
+   El nivel de agotamiento (`Burnout_Level`) actua como un sintoma terminal mas que como una alerta temprana. Se recomienda entrenar modelos con y sin esta variable.
 3. **Uso Reactivo de la Inteligencia Artificial:**  
-   Los alumnos en riesgo usan más horas la IA ($3.51$ vs $2.53$ hrs). Esto sugiere que recurren a herramientas generativas a última hora como un intento desesperado de resolver tareas atrasadas, sin un proceso reflexivo de estudio.
-4. **El Sedentarismo como Agravante:**  
-   La reducción a la mitad de la actividad física ($0.68$ hrs) priva a los estudiantes en riesgo de un mecanismo biológico natural para reducir el cortisol y regular el ciclo circadiano del sueño.
+   Los estudiantes con bajo rendimiento usan mas tiempo la IA generativa ($3.51$ vs $2.53$ hrs), lo que evidencia que la usan como atajo de ultima hora y no como herramienta de estudio planificado.
+4. **Sedentarismo como Multiplicador:**  
+   Los estudiantes en riesgo realizan la mitad de actividad fisica diaria ($0.68$ hrs), agravando el estres y el insomnio.
 
 ---
 
-## 8. Plan de Mejora y Recomendaciones
+## 7. Recomendaciones
 
-### A. Recomendaciones Prácticas para el Alumnado 🎓
-1. **Higiene Digital y Control de Pantallas:**
-   - Establecer un límite diario en redes sociales (meta: menos de 4 horas al día).
-   - Aplicar la regla de **cero pantallas 30 minutos antes de dormir** para recuperar un descanso mínimo de 7 horas continuas.
-2. **Uso Productivo y Crítico de la IA:**
-   - Utilizar herramientas de IA como un **tutor interactivo** (para pedir explicaciones paso a paso, generar cuestionarios de repaso o sintetizar lecturas densas) y no como un atajo de copiado pasivo.
-3. **Autocuidado y Movimiento:**
-   - Integrar 30 a 45 minutos diarios de actividad física para reducir la fatiga mental y mejorar la concentración.
-   - Formar círculos de estudio presenciales para combatir el aislamiento social.
-4. **Detección Oportuna del Estrés:**
-   - Reconocer los primeros síntomas de agotamiento (*Burnout*) y solicitar apoyo psicopedagógico antes de llegar al nivel severo.
+### Para el Alumnado
+* **Higiene digital:** Limitar el uso de redes sociales a menos de 4 horas diarias y evitar el uso de pantallas 30 minutos antes de dormir para asegurar al menos 7 horas de descanso.
+* **Uso productivo de la IA:** Usar la IA como tutor para formular preguntas, resumir y resolver dudas complejas, en lugar de copiar respuestas sin asimilar el conocimiento.
+* **Actividad fisica:** Realizar entre 30 y 45 minutos diarios de ejercicio para despejar la mente y reducir el aislamiento social.
+* **Atencion al estres:** Reconocer senales tempranas de fatiga y solicitar apoyo psicopedagogico antes de llegar al agotamiento severo.
 
-### B. Recomendaciones para la Institución Educativa 🏫
-1. **Sistema Preventivo de Alertas Tempranas:**
-   - Aplicar breves cuestionarios semestrales de bienestar (3-5 preguntas sobre sueño y estrés) para canalizar a tiempo a estudiantes con agotamiento moderado o alto.
-2. **Talleres de Alfabetización en IA y Gestión del Tiempo:**
-   - Capacitar a la comunidad estudiantil en metodologías de estudio efectivas y uso ético de la IA.
-3. **Calendarización Académica Equilibrada:**
-   - Evitar semanas de sobrecarga extrema coordinando las fechas de entregas y exámenes entre docentes para reducir picos de agotamiento colectivo.
+### Para la Institucion Educativa
+* **Alertas tempranas:** Implementar check-ins semestrales breves sobre sueno y nivel de estres para detectar estudiantes en riesgo antes de los examenes finales.
+* **Equilibrio de carga:** Coordinar fechas de entregas y evaluaciones entre asignaturas para evitar picos simultaneos de agotamiento academico.
 
 ---
 
-## 9. Valor Técnico y Competencias Adquiridas
+## 8. Valor Tecnico y Competencias Adquiridas
 
-Al desarrollar esta práctica y avance de proyecto, se consolidaron las siguientes competencias profesionales en Ciencia de Datos e Inteligencia Artificial:
-
-```
-[Datos Crudos] ──> [Limpieza y Validación] ──> [Mapeo de Variables] ──> [Análisis Univariado/Multivariado] ──> [Detección de Sesgos/Leakage] ──> [Decisiones de Negocio/Impacto]
-```
-
-1. **Manipulación de Datos a Escala con Pandas y NumPy:**
-   - Carga, indexación, filtrado, cálculos agregados (`groupby`, `mean`, `std`, `median`).
-   - Generación de tablas cruzadas complejas con normalización por filas (`pd.crosstab(..., normalize='index')`).
-2. **Visualización Analítica Avanzada con Matplotlib y Seaborn:**
-   - Creación de cuadrículas de subplots con diseño visual consistente y legible.
-   - Construcción de diagramas analíticos: Histogramas con anotaciones dinámicas, Heatmaps con coeficientes de correlación, Boxplots multivariados y Gráficos de Barras Apiladas (*Stacked Bar*).
-3. **Estadística Descriptiva y Detección de Anomalías:**
-   - Interpretación de medidas de tendencia central y dispersión.
-   - Implementación algorítmica del método del Rango Intercuartílico ($IQR$) para la identificación rigurosa de valores atípicos.
-4. **Pensamiento Crítico y Metodológico en Machine Learning:**
-   - Identificación de problemas de desbalance severo de clases.
-   - Detección de riesgos de fuga de información (*Data Leakage*) previa al modelado.
-5. **Comunicación Técnica Efectiva:**
-   - Capacidad de traducir métricas estadísticas complejas en hallazgos claros, explicaciones pedagógicas y recomendaciones accionables para directivos y estudiantes.
+El desarrollo de este proyecto aporto las siguientes competencias profesionales:
+* **Analisis exploratorio avanzado con Pandas y NumPy:** Agrupaciones multivariadas, indexacion jerarquica y tablas de contingencia normalizadas.
+* **Visualizacion analitica con Matplotlib y Seaborn:** Diseno de subplots legibles, matrices de correlacion y diagramas de caja.
+* **Tratamiento estadistico de datos:** Aplicacion de estadistica no parametrica (IQR) y analisis de correlaciones bivariadas.
+* **Criterio metodologico en Machine Learning:** Deteccion de desbalance de clases y prevencion de fuga de informacion (*Data Leakage*).
+* **Comunicacion tecnica y de negocio:** Capacidad de traducir datos crudos a diagnosticos y planes de accion comprensibles.
 
 ---
 
-## 10. Instrucciones de Instalación y Ejecución
+## 9. Ejecucion del Codigo
 
-### Requisitos Previos
+### Requisitos
 * Python 3.10 o superior.
-* Jupyter Notebook o VS Code con extensión de Jupyter.
+* Librerias: `pandas`, `numpy`, `matplotlib`, `seaborn`.
 
-### Clonar el Repositorio y Configurar Entorno
+### Ejecutar el Script Principal
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/malcaraz37/BigDatayDataMining.git
-cd BigDatayDataMining
-
-# 2. Crear y activar entorno virtual
-python -m venv .venv
-# En Windows (PowerShell):
-.venv\Scripts\Activate.ps1
-# En Linux/Mac:
-source .venv/bin/activate
-
-# 3. Instalar librerías requeridas
-pip install pandas numpy matplotlib seaborn scikit-learn jupyter
+python analisis_eda.py
 ```
 
-### Ejecutar el Cuaderno
-Abre el archivo [Dataset_Healthy_AI_SOCIAL_MEDIA_IMPACT.ipynb](file:///c:/Users/Manuel/Documents/BigDatayDataMining/AI%20SALUD/Dataset_Healthy_AI_SOCIAL_MEDIA_IMPACT.ipynb) dentro de la carpeta `AI SALUD/` y selecciona el kernel del entorno virtual `.venv`.
-
 ---
-*Facultad de Telemática — Universidad de Colima | Octubre 2026*
+*Facultad de Telematica — Universidad de Colima*
